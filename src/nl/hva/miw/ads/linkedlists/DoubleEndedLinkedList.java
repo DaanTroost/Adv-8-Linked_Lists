@@ -36,7 +36,20 @@ public class DoubleEndedLinkedList {
      * @return
      */
     public int get( int index ) {
-        return -1;
+        if (index < 0 || index > size) {
+            return Integer.MAX_VALUE;
+        }
+        Node returnNode = head;
+        if (index == 0){
+            return returnNode.value;
+        } else if (index + 1 == size){
+            returnNode = tail;
+        } else {
+            for (int i = 0; i < index; i++) {
+                returnNode = returnNode.next;
+            }
+        }
+        return returnNode.value;
     }
 
     /**
@@ -51,6 +64,29 @@ public class DoubleEndedLinkedList {
         Node n = new Node( value );
 
         // Implement the rest
+        if (index == 0){
+            n.next = head;
+            head.prev = n;
+            head = n;
+            return;
+        } else if (index + 1 == size) {
+            tail.next = n;
+            n.prev = tail;
+            tail = n;
+            return;
+        }
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        current.next = n;
+        n.prev = current;
+        if (current.next != null){
+            current.next.prev = n;
+        }
+        if (current.prev != null){
+            current.prev.next = n;
+        }
 
     }
 
@@ -61,6 +97,11 @@ public class DoubleEndedLinkedList {
      */
     public void remove( int index ) {
         // Implement, remove the corresponding node from the linked list.
+    }
+
+    public void removeAll() {
+        tail = null;
+        head = null;
     }
 
 

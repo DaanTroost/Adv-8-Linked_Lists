@@ -35,7 +35,11 @@ public class DoublyLinkedList {
      * @return
      */
     public int get( int index ) {
-        return -1;
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.value;
     }
 
     /**
@@ -45,12 +49,37 @@ public class DoublyLinkedList {
      * @param value
      */
     public void add( int index, int value ) {
+        if (index < 0 || index > size){
+            return;
+        }
         // Implement, create a new Node for this entry.
 
         Node n = new Node( value );
+        size++;
 
         // Implement the rest
 
+        if (index == 0){
+            if (head != null) {
+                head.prev = n;
+            }
+            n.next = head;
+            head = n;
+            return;
+        }
+
+        Node current = head;
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+
+        n.next = current.next;
+        n.prev = current;
+
+        if (current.next != null){
+            current.next.prev = n;
+        }
+        current.next = n;
     }
 
     /**
@@ -59,7 +88,37 @@ public class DoublyLinkedList {
      * @param index
      */
     public void remove( int index ) {
-        // Implement, remove the corresponding node from the linked list.
+
+        if (index < 0 || index >= size) {
+            return;
+        }
+
+        Node current = head;
+        size--;
+
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        if (current.next != null){
+            current.next.prev = current.prev;
+        }
+        if (current.prev != null){
+            current.prev.next = current.next;
+        }
+
+        if (index == 0){
+            head = current.next;
+        }
+    }
+
+    public void removeAll(){
+        Node temp = new Node(0);
+        while (head != null){
+            temp = head;
+            head = head.next;
+            temp = null;
+        }
+        size = 0;
     }
 
 

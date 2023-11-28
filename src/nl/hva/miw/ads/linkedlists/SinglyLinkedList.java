@@ -10,7 +10,7 @@ public class SinglyLinkedList {
     private class Node {
         int value;
 
-        Node next=null;      // Link to next node
+        Node next = null;      // Link to next node
 
         public Node(int value) {
             this.value = value;
@@ -33,8 +33,15 @@ public class SinglyLinkedList {
      * @param index
      * @return
      */
-    public int get( int index ) {
-        return -1;
+    public int get(int index) {
+        if (index < 0 || index > size){
+            return Integer.MAX_VALUE;
+        }
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.value;
     }
 
     /**
@@ -43,21 +50,54 @@ public class SinglyLinkedList {
      * @param index
      * @param value
      */
-    public void add( int index, int value ) {
+    public void add(int index, int value) {
         // Implement, create a new Node for this entry.
 
-        Node n = new Node( value );
+        Node n = new Node(value);
+        size++;
 
         // Implement the rest
+        Node current = head;
+
+        if (index == 0) {
+            n.next = current;
+            head = n;
+            return;
+        }
+
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+
+        n.next = current.next;
+        current.next = n;
     }
+
 
     /**
      * Remove an elmeent from the list at position index, if it exists.
      *
      * @param index
      */
-    public void remove( int index ) {
-        // Implement, remove the corresponding node from the linked list.
+    public void remove(int index) {
+        if (index < 0 || index > size) {
+            return;
+        }
+
+        Node current = head;
+        Node newNextNode = null;
+        size--;
+
+        if (index == 0) {
+            head = current.next;
+            return;
+        }
+
+        for (int i = 0; i < index - 1; i++) {
+                current = current.next;
+        }
+        newNextNode = current.next.next;
+        current.next = newNextNode;
     }
 
 
@@ -68,15 +108,12 @@ public class SinglyLinkedList {
         sb.append("SinglyLinkedList{size=").append(size).append("}");
 
         Node current = this.head;
-        while ( current != null ) {
+        while (current != null) {
             sb.append(" ");
-            sb.append( current.value );
+            sb.append(current.value);
             current = current.next;
         }
 
         return sb.toString();
     }
-
-
-
 }
